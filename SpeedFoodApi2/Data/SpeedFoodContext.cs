@@ -10,6 +10,7 @@ namespace SpeedFoodApi2.Data
         {
         }
 
+        public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<Candidato> Candidatos { get; set; }
         public DbSet<Produto> Produtos { get; set; }

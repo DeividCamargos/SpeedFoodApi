@@ -22,7 +22,6 @@ C:\Users\Deivid\source\repos\SpeedFoodApi2\SpeedFoodApi2\obj\Debug\net5.0\static
 C:\Users\Deivid\source\repos\SpeedFoodApi2\SpeedFoodApi2\obj\Debug\net5.0\staticwebassets\SpeedFoodApi2.StaticWebAssets.xml
 C:\Users\Deivid\source\repos\SpeedFoodApi2\SpeedFoodApi2\obj\Debug\net5.0\scopedcss\bundle\SpeedFoodApi2.styles.css
 C:\Users\Deivid\source\repos\SpeedFoodApi2\SpeedFoodApi2\obj\Debug\net5.0\SpeedFoodApi2.RazorTargetAssemblyInfo.cache
-C:\Users\Deivid\source\repos\SpeedFoodApi2\SpeedFoodApi2\obj\Debug\net5.0\SpeedFoodApi2.csproj.CopyComplete
 C:\Users\Deivid\source\repos\SpeedFoodApi2\SpeedFoodApi2\obj\Debug\net5.0\SpeedFoodApi2.dll
 C:\Users\Deivid\source\repos\SpeedFoodApi2\SpeedFoodApi2\obj\Debug\net5.0\ref\SpeedFoodApi2.dll
 C:\Users\Deivid\source\repos\SpeedFoodApi2\SpeedFoodApi2\obj\Debug\net5.0\SpeedFoodApi2.pdb
