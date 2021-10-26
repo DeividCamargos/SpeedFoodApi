@@ -22,33 +22,59 @@ namespace SpeedFoodApi2.Controllers
 
         // GET: api/Pedido
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pedido>>> GetAvaliacoes()
+        public async Task<ActionResult<List<Pedido>>> GetAvaliacoes()
         {
-            return await _context.Pedidos.ToListAsync();
+            try
+            {
+                var List = await _context.Pedidos.AsNoTracking().ToListAsync();
+
+                return Ok(List);
+            }   
+            catch
+            {
+                return BadRequest(new { message = "Não foi possivel retornar nenhum pedido" });
+            }
         }
 
         // GET: api/Pedido/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Pedido>> GetAvaliacao(int id)
         {
-            var pedido = await _context.Pedidos.FindAsync(id);
-
-            if (pedido == null)
+            try
             {
-                return NotFound();
-            }
+                var pedido = await _context.Pedidos.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
-            return pedido;
+                if (pedido == null)
+                    return NotFound(new { message = "Id não encontrado" });
+
+                return Ok(pedido);
+            }
+            catch 
+            {
+                return BadRequest(new { message = "Não foi Possível retornar o pedido" });
+            } 
         }
 
         // POST: api/Pedido
         [HttpPost]
-        public async Task<ActionResult> PostAvaliacao([FromBody] Pedido pedido)
+        public async Task<ActionResult<Pedido>> PostAvaliacao([FromBody] Pedido pedido)
         {
-            _context.Pedidos.Add(pedido);
-            await _context.SaveChangesAsync();
+            pedido.Data = System.DateTime.Now;
 
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                _context.Pedidos.Add(pedido);
+                await _context.SaveChangesAsync();
+
+                return Ok(); 
+            }
+            catch (System.Exception)
+            {
+                return BadRequest(new { message = "Não foi possível criar o pedido" });
+            }
         }
     }
 }

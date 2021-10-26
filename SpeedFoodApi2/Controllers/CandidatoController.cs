@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -22,33 +23,58 @@ namespace SpeedFoodApi2.Controllers
 
         // GET: api/Candidato
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Candidato>>> GetAvaliacoes()
+        public async Task<ActionResult<List<Candidato>>> GetAvaliacoes()
         {
-            return await _context.Candidatos.ToListAsync();
+            try
+            {
+                var List = await _context.Candidatos.AsNoTracking().ToListAsync();
+
+                return Ok(List);
+            }
+            catch 
+            {
+                return BadRequest(new { message = "Não foi possível retornar nenhuma categoria" });
+            }
         }
 
         // GET: api/Candidato/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Candidato>> GetAvaliacao(int id)
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<ActionResult<Candidato>> GetAvaliacao(int? id)
         {
-            var candidato = await _context.Candidatos.FindAsync(id);
-
-            if (candidato == null)
+            try
             {
-                return NotFound();
+                var candidato = await _context.Candidatos.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+                if (candidato == null)
+                    return NotFound(new { message = "Id não encontrado " });
+
+                return Ok(candidato);
             }
-
-            return candidato;
+            catch
+            {
+                return BadRequest(new { message = "Não foi possível retornar  a categoria" });
+            }
         }
-
+                
         // POST: api/Candidato
         [HttpPost]
-        public async Task<ActionResult> PostAvaliacao([FromBody] Candidato candidato)
+        public async Task<ActionResult<Candidato>> PostAvaliacao([FromBody] Candidato candidato)
         {
-            _context.Candidatos.Add(candidato);
-            await _context.SaveChangesAsync();
-
-            return Ok();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            try
+            {
+                _context.Candidatos.Add(candidato);
+                await _context.SaveChangesAsync();
+                
+                return Ok(candidato);
+            }
+            catch
+            {
+                return BadRequest(new { message = "Não foi possível criar o Candidato" });
+            }
         }
     }
 }

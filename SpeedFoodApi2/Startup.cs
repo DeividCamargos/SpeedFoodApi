@@ -32,6 +32,13 @@ namespace SpeedFoodApi2
 
             services.AddDbContext<SpeedFoodContext>(options =>
                 options.UseSqlServer("Server=.\\SQLEXPRESS;Database=SpeedFoodDb;User=sa;Password=abcd.1234;ConnectRetryCount=0;MultipleActiveResultSets=true"));
+            
+            services.AddScoped<SpeedFoodContext, SpeedFoodContext>();
+            //services.Configure<IISOptions>(o =>
+            //{
+            //    o.ForwardClientCertificate = false;
+            //});
+
             //services.AddSwaggerGen(c =>
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "SpeedFoodApi2", Version = "v1" });
@@ -47,7 +54,7 @@ namespace SpeedFoodApi2
                 //app.UseSwagger();
                 //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SpeedFoodApi2 v1"));
             }
-
+                
             app.UseDefaultFiles();
             app.UseStaticFiles();
 

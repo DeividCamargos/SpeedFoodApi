@@ -22,33 +22,57 @@ namespace SpeedFoodApi2.Controllers
 
         // GET: api/Avaliacao
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Avaliacao>>> GetAvaliacoes()
+        public async Task<ActionResult<List<Avaliacao>>> GetAvaliacoes()
         {
-            return await _context.Avaliacoes.ToListAsync();
-        }
+            try
+            {
+                var List = await _context.Avaliacoes.AsNoTracking().ToListAsync();
 
-        // GET: api/Avaliacao/5
-        [HttpGet("{id}")]
+                return Ok(List);            
+            }
+            catch
+            {
+                return BadRequest(new { message = "Não foi possível retornar nenhuma avaliação" });
+            }
+        }
+         
+        [HttpGet]
+        [Route("{id:int}")]
         public async Task<ActionResult<Avaliacao>> GetAvaliacao(int id)
         {
-            var avaliacao = await _context.Avaliacoes.FindAsync(id);
-
-            if (avaliacao == null)
+            try
             {
-                return NotFound();
-            }
+                var avaliacao = await _context.Avaliacoes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
-            return avaliacao;
-        } 
+                if (avaliacao == null)
+                    return NotFound(new { message = "Id não encontrado" });
+                
+                return Ok(avaliacao);
+            }
+            catch
+            {
+                return BadRequest(new { message = "Não foi possível retornar a avaliação" });
+            }
+        }
 
         // POST: api/Avaliacao 
-        [HttpPost] 
-        public async Task<ActionResult> PostAvaliacao([FromBody]Avaliacao avaliacao)
+        [HttpPost]
+        public async Task<ActionResult<Avaliacao>> PostAvaliacao([FromBody] Avaliacao avaliacao)
         {
-            _context.Avaliacoes.Add(avaliacao);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return Ok();
+            try
+            {
+                _context.Avaliacoes.Add(avaliacao);
+                await _context.SaveChangesAsync();
+
+                return Ok(avaliacao);
+            }
+            catch
+            {
+                return BadRequest(new { message = "Não foi possível criar a categoria" });
+            }
         }
     }
 }
